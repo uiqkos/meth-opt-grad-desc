@@ -13,18 +13,25 @@ def gradient_descend(
     derivative: list[Callable[[float], Point]],
     start: Point,
     learning_rate: float,
-    stop: float = 0.001,
-    max_iter: int = 1000,
+    max_iter: int, *,
+    stop_function_delta: float | None = None,
+    stop_point_delta: float | None = None,
 ) -> list[Point]:
+    if (stop_function_delta is not None) and stop_function_delta < 0:
+        raise ValueError("Условие останова по значениям функции должно быть положительным")
+    if (stop_point_delta is not None) and stop_point_delta < 0:
+        raise ValueError("Условие останова по точкам должно быть положительным")
     path = [start]
 
     for _ in range(max_iter):
-        # grad = np.array([d(*path[-1]) for d in derivative])
         grad = np.array([coord(*path[-1]) for coord in derivative])
         new_point = path[-1] - learning_rate * grad
         path.append(new_point)
 
-        if abs(func(*path[-1]) - func(*path[-2])) < stop:
+        if (stop_function_delta is not None) and abs(func(*path[-1]) - func(*path[-2])) < stop_function_delta:
+            break
+
+        if (stop_point_delta is not None) and np.linalg.norm(path[-1]-path[-2]) < stop_point_delta:
             break
 
     return path
@@ -45,13 +52,7 @@ def derivative(f, vars):
 
 if __name__ == '__main__':
     x, y = sympy.symbols('x y', real=True)
-    f_sp = x ** 2 - 1.34 * y ** 2 - 2 * y + 0.14
+    f_sp = x ** 2 + y ** 2
     f = simplify(f_sp, [x, y])
-    path = gradient_descend(f, derivative(f_sp, [x, y]), np.array([0, 0]), 0.1, 0.001, 1000)
-
-    print(path)
-    print(path[-1])
-
-#%%
-
-#%%
+    path = gradient_descend(f, derivative(f_sp, [x, y]), np.array([10, 10]), 0.1, 10**100,
+                            stop_function_delta=1e-15)
