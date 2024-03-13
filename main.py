@@ -63,3 +63,19 @@ if __name__ == '__main__':
                             stop_function_delta=1e-15)
 
     scipi_nelder_mead(f, np.array([10., 10.]))
+
+grad = np.array([1, 2])
+x = np.array([10, 10])
+f = lambda t: t[0] ** 2 + t[1] ** 2
+
+from operator import add, mul, sub
+from functools import partial
+
+compose2 = lambda f, g: lambda x: f(g(x))
+from functools import reduce
+
+compose = lambda *fs: reduce(compose2, fs)
+
+g = compose(f, partial(add, x), partial(mul, -grad))
+
+print(g(5))
