@@ -2,15 +2,15 @@ from functools import wraps
 from typing import Callable
 
 import numpy as np
-import scipy
 import sympy
+from scipy.optimize import minimize
 
 Point = np.ndarray
 
 
 def gradient_descend(
     func: Callable[[Point], float],
-    derivative: list[Callable[[float], Point]],
+    derivatives: list[Callable[[Point], Point]],
     start: Point,
     learning_rate: float,
     max_iter: int, *,
@@ -24,35 +24,42 @@ def gradient_descend(
     path = [start]
 
     for _ in range(max_iter):
-        grad = np.array([coord(*path[-1]) for coord in derivative])
+        grad = np.array([coord(path[-1]) for coord in derivatives])
         new_point = path[-1] - learning_rate * grad
         path.append(new_point)
 
-        if (stop_function_delta is not None) and abs(func(*path[-1]) - func(*path[-2])) < stop_function_delta:
+        if (stop_function_delta is not None) and abs(func(path[-1]) - func(path[-2])) < stop_function_delta:
             break
 
-        if (stop_point_delta is not None) and np.linalg.norm(path[-1]-path[-2]) < stop_point_delta:
+        if (stop_point_delta is not None) and np.linalg.norm(path[-1] - path[-2]) < stop_point_delta:
             break
 
     return path
 
 
-def simplify(f, vars):
+def scipi_nelder_mead(f, x0):
+    res = minimize(f, x0, method='Nelder-Mead', tol=1e-6, options=dict(disp=True))
+    print(res)
+
+
+def tupled(f):
     @wraps(f)
-    def wrapper(*args):
-        return f.subs(tuple(zip(vars, args))).evalf()
+    def wrapper(args):
+        return f(*args)
 
     return wrapper
 
 
 def derivative(f, vars):
-    diffs = [simplify(f.diff(var), vars) for var in vars]
+    diffs = [tupled(sympy.lambdify(vars, f.diff(var), 'numpy')) for var in vars]
     return diffs
 
 
 if __name__ == '__main__':
     x, y = sympy.symbols('x y', real=True)
-    f_sp = x ** 2 + y ** 2
-    f = simplify(f_sp, [x, y])
-    path = gradient_descend(f, derivative(f_sp, [x, y]), np.array([10, 10]), 0.1, 10**100,
+    f = lambda t: t[0] ** 2 + t[1] ** 2
+    f_sp = f([x, y])
+    path = gradient_descend(f, derivative(f_sp, [x, y]), np.array([10, 10]), 0.1, 10 ** 100,
                             stop_function_delta=1e-15)
+
+    scipi_nelder_mead(f, np.array([10., 10.]))
