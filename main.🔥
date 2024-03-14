@@ -44,10 +44,10 @@ fn gradient_descend[N: Int](
 
         path.append(new_point)
 
-        if stop_function_delta and abs(func(last(path)) - func(path[-2])) < stop_function_delta.value():
+        if stop_function_delta and abs(func(last(path)) - func(path[len(path) - 2])) < stop_function_delta.value():
             break
 
-        if stop_point_delta and norm(last(path) - path[-2]) < stop_point_delta.value():
+        if stop_point_delta and norm(last(path) - path[len(path) - 2]) < stop_point_delta.value():
             break
 
     return path
