@@ -33,6 +33,7 @@ def dichotomy_method(left: float, right: float, function: Callable[[float], floa
     return middle
 
 
+
 def gradient_descend(
     func: Callable[[Point], float],
     derivatives: list[Callable[[Point], Point]],
