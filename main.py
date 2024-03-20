@@ -4,9 +4,11 @@ from functools import wraps
 from pprint import pprint
 from typing import Callable, Optional, Any
 
+
 import numpy as np
 import sympy
 from scipy.optimize import minimize
+from scipy.constants import golden_ratio
 
 Point = np.ndarray
 LearningRateFunction = Callable[[float, float, Callable[[float], float]], float]
@@ -43,6 +45,28 @@ def dichotomy_method(stop_delta: float) -> LearningRateFunction:
     return rate_function
 
 
+def golden_ratio_method(stop_delta: float) -> LearningRateFunction:
+    def rate_function(left: float, right: float, function: Callable[[float], float]) -> float:
+        x1 = left + (right - left) / golden_ratio**2
+        x2 = left + (right - left) / golden_ratio
+        x1_val = function(x1)
+        x2_val = function(x2)
+        while (right - left) > stop_delta:
+            if x1_val <= x2_val:
+                right = x2
+                x2 = x1
+                x1 = left + (right - left) / golden_ratio ** 2
+                x1_val = function(x1)
+            else:
+                left = x1
+                x1 = x2
+                x2 = left + (right - left) / golden_ratio
+                x2_val = function(x2)
+        return (left + right) / 2
+
+    return rate_function
+
+
 class StopReason(Enum):
     ITERATIONS: str = "iterations"
     FUNCTION_DELTA: str = "function_delta"
@@ -71,7 +95,6 @@ def gradient_descend(
         raise ValueError("Условие останова по значениям функции должно быть положительным")
     if (stop_point_delta is not None) and stop_point_delta < 0:
         raise ValueError("Условие останова по точкам должно быть положительным")
-
     path = [start]
     stop_reason = StopReason.ITERATIONS
 
@@ -126,7 +149,7 @@ if __name__ == '__main__':
         f,
         derivatives=derivative(f_sp, [x, y]),
         start=np.array([10., 10.]),
-        learning_rate_function=dichotomy_method(1e-10),
+        learning_rate_function=golden_ratio_method(1e-10),
         max_iter=1000,
         # stop_function_delta=1e-10,
         # stop_point_delta=1e-10
