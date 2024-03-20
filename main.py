@@ -76,7 +76,7 @@ class StopReason(Enum):
 
 @dataclass
 class GradientDescendResult:
-    path: list[Point]
+    path: np.ndarray
     result: Point
     iterations: int
     stop_reason: StopReason
@@ -116,7 +116,7 @@ def gradient_descend(
             break
 
     return GradientDescendResult(
-        path=path,
+        path=np.array(path),
         result=path[-1],
         iterations=len(path) - 1,
         stop_reason=stop_reason
