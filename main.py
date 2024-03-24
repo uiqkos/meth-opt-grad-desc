@@ -4,11 +4,13 @@ from functools import wraps
 from pprint import pprint
 from typing import Callable, Optional, Any
 
-
 import numpy as np
 import sympy
-from scipy.optimize import minimize
+import scipy
 from scipy.constants import golden_ratio
+
+# from scipy.optimize import minimize
+# from scipy.constants import golden_ratio
 
 Point = np.ndarray
 LearningRateFunction = Callable[[float, float, Callable[[float], float]], float]
@@ -17,6 +19,8 @@ LearningRateFunction = Callable[[float, float, Callable[[float], float]], float]
 def constant_rate(lr: float) -> LearningRateFunction:
     def rate_function(_, __, ___):
         return lr
+
+    rate_function.__name__ = "constant_rate"
 
     return rate_function
 
@@ -42,12 +46,14 @@ def dichotomy_method(stop_delta: float) -> LearningRateFunction:
                 right = x2
         return middle
 
+    rate_function.__name__ = "dichotomy_method"
+
     return rate_function
 
 
 def golden_ratio_method(stop_delta: float) -> LearningRateFunction:
     def rate_function(left: float, right: float, function: Callable[[float], float]) -> float:
-        x1 = left + (right - left) / golden_ratio**2
+        x1 = left + (right - left) / golden_ratio ** 2
         x2 = left + (right - left) / golden_ratio
         x1_val = function(x1)
         x2_val = function(x2)
@@ -63,6 +69,8 @@ def golden_ratio_method(stop_delta: float) -> LearningRateFunction:
                 x2 = left + (right - left) / golden_ratio
                 x2_val = function(x2)
         return (left + right) / 2
+
+    rate_function.__name__ = "golden_ratio_method"
 
     return rate_function
 
@@ -100,7 +108,7 @@ def gradient_descend(
 
     for _ in range(max_iter):
         grad = np.array([coord(path[-1]) for coord in derivatives])
-        new_point = path[-1] - learning_rate_function(0, 0.01, lambda l: func(path[-1] - l * grad)) * grad
+        new_point = path[-1] - learning_rate_function(0, 0.1, lambda l: func(path[-1] - l * grad)) * grad
         path.append(new_point)
 
         if np.isnan(new_point).any():
@@ -123,9 +131,41 @@ def gradient_descend(
     )
 
 
-def scipy_nelder_mead(f, x0):
-    res = minimize(f, x0, method='Nelder-Mead', tol=1e-6, options=dict(disp=True))
-    print(res)
+fixed = False
+
+
+def add_sim():
+    global fixed
+
+    if fixed:
+        return
+
+    import inspect
+
+    code = inspect.getsource(scipy.optimize._optimize._minimize_neldermead)
+    marker = 'intermediate_result = OptimizeResult(x=sim[0], fun=fsim[0])'
+    need_to_add = "intermediate_result['sim'] = sim"
+
+    if need_to_add in code:
+        return
+
+    idx = code.index(marker) + len(marker)
+    code = code[:idx] + '; ' + need_to_add + code[idx:]
+
+    ns = {}
+    exec(code, scipy.optimize._optimize.__dict__, ns)
+    exec(inspect.getsource(scipy.optimize.minimize),
+         scipy.optimize._minimize.__dict__ | ns, ns)
+    scipy.optimize.minimize = ns['minimize']
+
+    fixed = True
+
+
+def scipy_nelder_mead(f, x0, *args, **kwargs):
+    add_sim()
+    return scipy.optimize.minimize(
+        f, x0, *args, method='Nelder-Mead',
+        tol=1e-6, options=dict(disp=True, maxiter=1000), **kwargs)
 
 
 def tupled(f):
