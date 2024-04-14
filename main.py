@@ -2,22 +2,19 @@ from dataclasses import dataclass
 from enum import Enum
 from functools import wraps
 from pprint import pprint
-from typing import Callable, Optional, Any
+from typing import Callable, Optional
 
 import numpy as np
-import sympy
 import scipy
+import sympy
 from scipy.constants import golden_ratio
 
-# from scipy.optimize import minimize
-# from scipy.constants import golden_ratio
-
 Point = np.ndarray
-LearningRateFunction = Callable[[float, float, Callable[[float], float]], float]
+LearningRateFunction = Callable[[float, float, Callable[[Point], float], Point, Point], float]
 
 
 def constant_rate(lr: float) -> LearningRateFunction:
-    def rate_function(_, __, ___):
+    def rate_function(*_):
         return lr
 
     rate_function.__name__ = "constant_rate"
@@ -26,7 +23,9 @@ def constant_rate(lr: float) -> LearningRateFunction:
 
 
 def dichotomy_method(stop_delta: float) -> LearningRateFunction:
-    def rate_function(left: float, right: float, function: Callable[[float], float]) -> float:
+    def rate_function(left: float, right: float,
+                      func: Callable[[Point], float], last_point: Point, grad: Point) -> float:
+        function = lambda lr: func(last_point - lr * grad)
         middle = (left + right) / 2
         middle_val = function(middle)
         while (right - left) > stop_delta:
@@ -52,7 +51,9 @@ def dichotomy_method(stop_delta: float) -> LearningRateFunction:
 
 
 def golden_ratio_method(stop_delta: float) -> LearningRateFunction:
-    def rate_function(left: float, right: float, function: Callable[[float], float]) -> float:
+    def rate_function(left: float, right: float,
+                      func: Callable[[Point], float], last_point: Point, grad: Point) -> float:
+        function = lambda lr: func(last_point - lr * grad)
         x1 = left + (right - left) / golden_ratio ** 2
         x2 = left + (right - left) / golden_ratio
         x1_val = function(x1)
@@ -103,12 +104,13 @@ def gradient_descend(
         raise ValueError("Условие останова по значениям функции должно быть положительным")
     if (stop_point_delta is not None) and stop_point_delta < 0:
         raise ValueError("Условие останова по точкам должно быть положительным")
+
     path = [start]
     stop_reason = StopReason.ITERATIONS
 
     for _ in range(max_iter):
         grad = np.array([coord(path[-1]) for coord in derivatives])
-        new_point = path[-1] - learning_rate_function(0, 0.1, lambda l: func(path[-1] - l * grad)) * grad
+        new_point = path[-1] - learning_rate_function(0, 0.1, func, path[-1], grad) * grad
         path.append(new_point)
 
         if np.isnan(new_point).any():
@@ -190,9 +192,7 @@ if __name__ == '__main__':
         derivatives=derivative(f_sp, [x, y]),
         start=np.array([10., 10.]),
         learning_rate_function=golden_ratio_method(1e-10),
-        max_iter=1000,
-        # stop_function_delta=1e-10,
-        # stop_point_delta=1e-10
+        max_iter=1000
     )
     pprint(path)
     scipy_nelder_mead(f, np.array([10., 10.]))
