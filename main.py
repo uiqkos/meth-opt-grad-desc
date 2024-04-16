@@ -5,6 +5,7 @@ from pprint import pprint
 from typing import Callable, Optional
 
 import numpy as np
+import numpy.linalg
 import scipy
 import sympy
 from scipy.constants import golden_ratio
@@ -84,21 +85,29 @@ class StopReason(Enum):
 
 
 @dataclass
-class GradientDescendResult:
+class DescendResult:
     path: np.ndarray
     result: Point
     iterations: int
     stop_reason: StopReason
 
 
+class GradientDescendResult(DescendResult):
+    pass
+
+
+class NewtonDescendResult(DescendResult):
+    pass
+
+
 def gradient_descend(
-    func: Callable[[Point], float],
-    derivatives: list[Callable[[Point], Point]],
-    start: Point,
-    learning_rate_function: LearningRateFunction,
-    max_iter: int, *,
-    stop_function_delta: Optional[float] = None,
-    stop_point_delta: Optional[float] = None,
+        func: Callable[[Point], float],
+        derivatives: list[Callable[[Point], Point]],
+        start: Point,
+        learning_rate_function: LearningRateFunction,
+        max_iter: int, *,
+        stop_function_delta: Optional[float] = None,
+        stop_point_delta: Optional[float] = None,
 ) -> GradientDescendResult:
     if (stop_function_delta is not None) and stop_function_delta < 0:
         raise ValueError("Условие останова по значениям функции должно быть положительным")
@@ -126,6 +135,47 @@ def gradient_descend(
             break
 
     return GradientDescendResult(
+        path=np.array(path),
+        result=path[-1],
+        iterations=len(path) - 1,
+        stop_reason=stop_reason
+    )
+
+
+def Newton_descend(
+        func,
+        hessian: list[list[Callable[[Point], Point]]],
+        derivatives: list[Callable[[Point], Point]],
+        start: Point,
+        learning_rate_function: LearningRateFunction,
+        max_iter: int, *,
+        stop_function_delta: Optional[float] = None,
+        stop_point_delta: Optional[float] = None,
+) -> NewtonDescendResult:
+    if (stop_function_delta is not None) and stop_function_delta < 0:
+        raise ValueError("Условие останова по значениям функции должно быть положительным")
+    if (stop_point_delta is not None) and stop_point_delta < 0:
+        raise ValueError("Условие останова по точкам должно быть положительным")
+    path = [start]
+    stop_reason = StopReason.ITERATIONS
+    for _ in range(max_iter):
+        grad = np.array([coord(path[-1]) for coord in derivatives])
+        hessian_counter = lambda p: p(path[-1])
+        new_point = path[-1] - np.linalg.inv(np.vectorize(hessian_counter)(hessian)) @ np.transpose(grad)
+        path.append(new_point)
+        if np.isnan(new_point).any():
+            stop_reason = StopReason.NAN
+            break
+
+        if (stop_function_delta is not None) and abs(func(path[-1]) - func(path[-2])) < stop_function_delta:
+            stop_reason = StopReason.FUNCTION_DELTA
+            break
+
+        if (stop_point_delta is not None) and np.linalg.norm(path[-1] - path[-2]) < stop_point_delta:
+            stop_reason = StopReason.POINT_DELTA
+            break
+
+    return NewtonDescendResult(
         path=np.array(path),
         result=path[-1],
         iterations=len(path) - 1,
@@ -183,16 +233,34 @@ def derivative(f, vars):
     return diffs
 
 
+def calculate_hesse_matrix(func, vars) -> list[list[Callable[[Point], Point]]]:
+    n = len(vars)
+    hesse_matrix = []
+    first_deratives = [func.diff(var) for var in vars]
+    for i in range(n):
+        raw = [tupled(sympy.lambdify(vars, first_deratives[i].diff(vars[j]), 'numpy')) for j in range(n)]
+        hesse_matrix.append(raw)
+    return hesse_matrix
+
+
 if __name__ == '__main__':
     x, y = sympy.symbols('x y', real=True)
-    f = lambda t: t[0] ** 2 + t[1] ** 2
+    f = lambda t: 0.001 * t[0] ** 2 + t[1] ** 2
     f_sp = f([x, y])
-    path = gradient_descend(
-        f,
-        derivatives=derivative(f_sp, [x, y]),
-        start=np.array([10., 10.]),
-        learning_rate_function=golden_ratio_method(1e-10),
-        max_iter=1000
-    )
+    # path = gradient_descend(
+    #     f,
+    #     derivatives=derivative(f_sp, [x, y]),
+    #     start=np.array([10., 10.]),
+    #     learning_rate_function=golden_ratio_method(1e-10),
+    #     max_iter=1000
+    # )
+    # pprint(path)
+    path = Newton_descend(f_sp,
+                          hessian=calculate_hesse_matrix(f_sp, [x, y]),
+                          derivatives=derivative(f_sp, [x, y]),
+                          start=np.array([10., 10.]),
+                          learning_rate_function=constant_rate(1),
+                          stop_point_delta=0.01,
+                          max_iter=1000)
     pprint(path)
     scipy_nelder_mead(f, np.array([10., 10.]))
