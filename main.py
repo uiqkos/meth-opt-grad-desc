@@ -116,7 +116,6 @@ def gradient_descend(
 
     path = [start]
     stop_reason = StopReason.ITERATIONS
-
     for _ in range(max_iter):
         grad = np.array([coord(path[-1]) for coord in derivatives])
         new_point = path[-1] - learning_rate_function(0, 0.1, func, path[-1], grad) * grad
@@ -161,12 +160,12 @@ def Newton_descend(
     for _ in range(max_iter):
         grad = np.array([coord(path[-1]) for coord in derivatives])
         hessian_counter = lambda p: p(path[-1])
-        new_point = path[-1] - np.linalg.inv(np.vectorize(hessian_counter)(hessian)) @ np.transpose(grad)
+        grad = np.linalg.inv(np.vectorize(hessian_counter)(hessian)) @ np.transpose(grad)
+        new_point = path[-1] - learning_rate_function(0, 1, func, path[-1], grad) * grad
         path.append(new_point)
         if np.isnan(new_point).any():
             stop_reason = StopReason.NAN
             break
-
         if (stop_function_delta is not None) and abs(func(path[-1]) - func(path[-2])) < stop_function_delta:
             stop_reason = StopReason.FUNCTION_DELTA
             break
@@ -255,12 +254,12 @@ if __name__ == '__main__':
     #     max_iter=1000
     # )
     # pprint(path)
-    path = Newton_descend(f_sp,
+    path = Newton_descend(tupled(sympy.lambdify([x, y], f_sp, 'numpy')),
                           hessian=calculate_hesse_matrix(f_sp, [x, y]),
                           derivatives=derivative(f_sp, [x, y]),
                           start=np.array([10., 10.]),
-                          learning_rate_function=constant_rate(1),
-                          stop_point_delta=0.01,
+                          learning_rate_function=golden_ratio_method(1e-10),
+                          stop_function_delta=1e-8,
                           max_iter=1000)
     pprint(path)
     scipy_nelder_mead(f, np.array([10., 10.]))
