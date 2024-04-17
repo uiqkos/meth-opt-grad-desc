@@ -6,6 +6,19 @@ from functools import wraps
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 
+def tupled(f):
+    @wraps(f)
+    def wrapper(args):
+        return f(*args)
+
+    return wrapper
+
+
+def derivative(f, vars):
+    diffs = [tupled(sympy.lambdify(vars, f.diff(var), 'numpy')) for var in vars]
+    return diffs
+
+
 def coefs_from_dict(coefs: dict[str, float]) -> list[float]:
     return [
         coefs.get("x^2", 0),

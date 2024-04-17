@@ -10,8 +10,11 @@ import scipy
 import sympy
 from scipy.constants import golden_ratio
 
+from utils import tupled, derivative
+
 Point = np.ndarray
 LearningRateFunction = Callable[[float, float, Callable[[Point], float], Point, Point], float]
+RFunction = Callable[[Point], float]
 
 
 def constant_rate(lr: float) -> LearningRateFunction:
@@ -85,30 +88,42 @@ class StopReason(Enum):
 
 
 @dataclass
-class DescendResult:
-    path: np.ndarray
+class OptimizationResult:
     result: Point
     iterations: int
     stop_reason: StopReason
+    success: bool
 
 
-class GradientDescendResult(DescendResult):
+@dataclass
+class SimplexOptimizationResult(OptimizationResult):
+    simplexes: list[Point]
+
+
+@dataclass
+class DescentOptimizationResult(OptimizationResult):
+    path: np.ndarray | list[Point]
+
+
+@dataclass
+class GradientOptimizationResult(DescentOptimizationResult):
     pass
 
 
-class NewtonDescendResult(DescendResult):
+@dataclass
+class NewtonOptimizationResult(DescentOptimizationResult):
     pass
 
 
 def gradient_descend(
-        func: Callable[[Point], float],
-        derivatives: list[Callable[[Point], Point]],
-        start: Point,
-        learning_rate_function: LearningRateFunction,
-        max_iter: int, *,
-        stop_function_delta: Optional[float] = None,
-        stop_point_delta: Optional[float] = None,
-) -> GradientDescendResult:
+    func: Callable[[Point], float],
+    derivatives: list[Callable[[Point], Point]],
+    start: Point,
+    learning_rate_function: LearningRateFunction,
+    max_iter: int, *,
+    stop_function_delta: Optional[float] = None,
+    stop_point_delta: Optional[float] = None,
+) -> GradientOptimizationResult:
     if (stop_function_delta is not None) and stop_function_delta < 0:
         raise ValueError("Условие останова по значениям функции должно быть положительным")
     if (stop_point_delta is not None) and stop_point_delta < 0:
@@ -133,24 +148,26 @@ def gradient_descend(
             stop_reason = StopReason.POINT_DELTA
             break
 
-    return GradientDescendResult(
-        path=np.array(path),
+    return GradientOptimizationResult(
         result=path[-1],
         iterations=len(path) - 1,
-        stop_reason=stop_reason
+        stop_reason=stop_reason,
+        success=stop_reason != StopReason.ITERATIONS,
+        path=np.array(path),
     )
 
 
-def Newton_descend(
-        func,
-        hessian: list[list[Callable[[Point], Point]]],
-        derivatives: list[Callable[[Point], Point]],
-        start: Point,
-        learning_rate_function: LearningRateFunction,
-        max_iter: int, *,
-        stop_function_delta: Optional[float] = None,
-        stop_point_delta: Optional[float] = None,
-) -> NewtonDescendResult:
+def newton_descend(
+    func,
+    hessian: list[list[Callable[[Point], Point]]],
+    derivatives: list[Callable[[Point], Point]],
+    start: Point,
+    learning_rate_function: LearningRateFunction,
+    max_iter: int, *,
+    stop_function_delta: Optional[float] = None,
+    stop_point_delta: Optional[float] = None,
+) -> NewtonOptimizationResult:
+    # todo вынести копипасту
     if (stop_function_delta is not None) and stop_function_delta < 0:
         raise ValueError("Условие останова по значениям функции должно быть положительным")
     if (stop_point_delta is not None) and stop_point_delta < 0:
@@ -174,21 +191,22 @@ def Newton_descend(
             stop_reason = StopReason.POINT_DELTA
             break
 
-    return NewtonDescendResult(
+    return NewtonOptimizationResult(
         path=np.array(path),
         result=path[-1],
         iterations=len(path) - 1,
+        success=stop_reason != StopReason.ITERATIONS,
         stop_reason=stop_reason
     )
 
 
-fixed = False
+fixed_nelder_mead = False
 
 
 def add_sim():
-    global fixed
+    global fixed_nelder_mead
 
-    if fixed:
+    if fixed_nelder_mead:
         return
 
     import inspect
@@ -209,27 +227,40 @@ def add_sim():
          scipy.optimize._minimize.__dict__ | ns, ns)
     scipy.optimize.minimize = ns['minimize']
 
-    fixed = True
+    fixed_nelder_mead = True
 
 
-def scipy_nelder_mead(f, x0, *args, **kwargs):
+def scipy_nelder_mead(f: RFunction, x0: Point, max_iterations=1000, verbose=True, *args, **kwargs):
     add_sim()
-    return scipy.optimize.minimize(
+
+    path = []
+
+    def callback(intermediate_result):
+        path.append(intermediate_result['sim'])
+
+    # return OptResult(res.x, res.nit, simplexes=path)
+
+    res = scipy.optimize.minimize(
         f, x0, *args, method='Nelder-Mead',
-        tol=1e-6, options=dict(disp=True, maxiter=1000), **kwargs)
+        tol=1e-6, options=dict(disp=verbose, maxiter=max_iterations), callback=callback, **kwargs)
+
+    return SimplexOptimizationResult(
+        result=res.x, iterations=res.nit, simplexes=path,
+        success=res.success,
+        stop_reason=res.message
+    )
 
 
-def tupled(f):
-    @wraps(f)
-    def wrapper(args):
-        return f(*args)
-
-    return wrapper
-
-
-def derivative(f, vars):
-    diffs = [tupled(sympy.lambdify(vars, f.diff(var), 'numpy')) for var in vars]
-    return diffs
+def scipy_newton_cg(f: RFunction, x0: Point, max_iterations=1000, verbose=True, *args, **kwargs):
+    res = scipy.optimize.minimize(
+        f, x0, *args,
+        method='Newton-CG', options=dict(disp=verbose, maxiter=max_iterations),
+        **kwargs)
+    return NewtonOptimizationResult(
+        path=[], result=res.x, iterations=res.nit,
+        stop_reason=res.message,
+        success=res.success
+    )
 
 
 def calculate_hesse_matrix(func, vars) -> list[list[Callable[[Point], Point]]]:
@@ -242,7 +273,7 @@ def calculate_hesse_matrix(func, vars) -> list[list[Callable[[Point], Point]]]:
     return hesse_matrix
 
 
-if __name__ == '__main__':
+def main():
     x, y = sympy.symbols('x y', real=True)
     f = lambda t: 0.001 * t[0] ** 2 + t[1] ** 2
     f_sp = f([x, y])
@@ -254,12 +285,18 @@ if __name__ == '__main__':
     #     max_iter=1000
     # )
     # pprint(path)
-    path = Newton_descend(tupled(sympy.lambdify([x, y], f_sp, 'numpy')),
-                          hessian=calculate_hesse_matrix(f_sp, [x, y]),
-                          derivatives=derivative(f_sp, [x, y]),
-                          start=np.array([10., 10.]),
-                          learning_rate_function=golden_ratio_method(1e-10),
-                          stop_function_delta=1e-8,
-                          max_iter=1000)
-    pprint(path)
-    scipy_nelder_mead(f, np.array([10., 10.]))
+    # path = newton_descend(tupled(sympy.lambdify([x, y], f_sp, 'numpy')),
+    #                       hessian=calculate_hesse_matrix(f_sp, [x, y]),
+    #                       derivatives=derivative(f_sp, [x, y]),
+    #                       start=np.array([10., 10.]),
+    #                       learning_rate_function=golden_ratio_method(1e-10),
+    #                       stop_function_delta=1e-8,
+    #                       max_iter=1000)
+    # pprint(path)
+    # scipy_nelder_mead(f, np.array([10., 10.]))
+
+    scipy_newton_cg(f, np.array([10, 10]))
+
+
+if __name__ == '__main__':
+    main()
