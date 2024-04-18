@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from functools import wraps
 from pprint import pprint
-from typing import Callable, Optional
+from typing import Callable, Optional, Any
 
 import numpy as np
 import numpy.linalg
@@ -77,6 +77,20 @@ def golden_ratio_method(stop_delta: float) -> LearningRateFunction:
     return rate_function
 
 
+def calculate_next_point_classic(last_point: Point, gradient: np.ndarray, hessian: np.ndarray,
+                                 **kwargs) -> Point:
+    func = kwargs["function"]
+    learning_rate_function = kwargs["lr_function"]
+    grad = np.linalg.inv(hessian) @ np.transpose(gradient)
+    return last_point - learning_rate_function(0, 1, func, last_point, grad) * grad
+
+
+def calculate_next_point_linear_system(last_point: Point, gradient: np.ndarray, hessian: np.ndarray,
+                                 **kwargs) -> Point:
+    delta_x = np.linalg.solve(hessian, gradient)
+    return last_point - delta_x
+
+
 class StopReason(Enum):
     ITERATIONS: str = "iterations"
     FUNCTION_DELTA: str = "function_delta"
@@ -143,6 +157,7 @@ def gradient_descend(
 
 def Newton_descend(
         func,
+        calculate_next_point_func,
         hessian: list[list[Callable[[Point], Point]]],
         derivatives: list[Callable[[Point], Point]],
         start: Point,
@@ -160,8 +175,10 @@ def Newton_descend(
     for _ in range(max_iter):
         grad = np.array([coord(path[-1]) for coord in derivatives])
         hessian_counter = lambda p: p(path[-1])
-        grad = np.linalg.inv(np.vectorize(hessian_counter)(hessian)) @ np.transpose(grad)
-        new_point = path[-1] - learning_rate_function(0, 1, func, path[-1], grad) * grad
+        calculated_hess = np.vectorize(hessian_counter)(hessian)
+        new_point = calculate_next_point_func(path[-1], grad, calculated_hess, function=func, lr_function=learning_rate_function)
+        # grad = np.linalg.inv(calculated_hess) @ np.transpose(grad)
+        # new_point = path[-1] - learning_rate_function(0, 1, func, path[-1], grad) * grad
         path.append(new_point)
         if np.isnan(new_point).any():
             stop_reason = StopReason.NAN
@@ -256,6 +273,7 @@ if __name__ == '__main__':
     # pprint(path)
     path = Newton_descend(tupled(sympy.lambdify([x, y], f_sp, 'numpy')),
                           hessian=calculate_hesse_matrix(f_sp, [x, y]),
+                          calculate_next_point_func=calculate_next_point_linear_system,
                           derivatives=derivative(f_sp, [x, y]),
                           start=np.array([10., 10.]),
                           learning_rate_function=golden_ratio_method(1e-10),
