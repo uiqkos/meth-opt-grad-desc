@@ -173,6 +173,7 @@ def gradient_descend(
 
 def newton_descend(
     func,
+    calculate_next_point_func,
     hessian: list[list[Callable[[Point], Point]]],
     derivatives: list[Callable[[Point], Point]],
     start: Point,
@@ -192,7 +193,8 @@ def newton_descend(
         grad = np.array([coord(path[-1]) for coord in derivatives])
         hessian_counter = lambda p: p(path[-1])
         calculated_hess = np.vectorize(hessian_counter)(hessian)
-        new_point = calculate_next_point_func(path[-1], grad, calculated_hess, function=func, lr_function=learning_rate_function)
+        new_point = calculate_next_point_func(path[-1], grad, calculated_hess,
+                                              function=func, lr_function=learning_rate_function)
         # grad = np.linalg.inv(calculated_hess) @ np.transpose(grad)
         # new_point = path[-1] - learning_rate_function(0, 1, func, path[-1], grad) * grad
         path.append(new_point)
@@ -301,7 +303,7 @@ def main():
     #     max_iter=1000
     # )
     # pprint(path)
-    path = Newton_descend(tupled(sympy.lambdify([x, y], f_sp, 'numpy')),
+    path = newton_descend(tupled(sympy.lambdify([x, y], f_sp, 'numpy')),
                           hessian=calculate_hesse_matrix(f_sp, [x, y]),
                           calculate_next_point_func=calculate_next_point_linear_system,
                           derivatives=derivative(f_sp, [x, y]),
