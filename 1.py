@@ -1,4 +1,3 @@
-
 import inspect
 from pprint import pprint
 
@@ -11,7 +10,6 @@ from main import gradient_descend, dichotomy_method, constant_rate, golden_ratio
 from utils import R2_derivatives, gen_func, plot_func, call_counter, plot_func_with_path_matplotlib, plot_2d_with_color, \
     plot_2d_and_3d_side_by_side
 
-
 from functools import wraps
 
 
@@ -21,7 +19,6 @@ def with_noise(func):
         return func(x) + np.random.normal(0, 0.001)
 
     return new_func
-
 
 
 func_coefs = [
@@ -40,37 +37,36 @@ from dataclasses import dataclass
 
 
 @dataclass
-class OptimizationResult:
+class OptResult:
     minimum: np.ndarray
     iterations: int
     path: Optional[np.ndarray] = None
     simplexes: Optional[list[np.ndarray]] = None
 
 
-
-def gradient_descend_constant_rate(start, dfs, f) -> OptimizationResult:
+def gradient_descend_constant_rate(start, dfs, f) -> OptResult:
     res = gradient_descend(f, dfs, start, constant_rate(0.05), 1000, stop_point_delta=1e-6)
-    return OptimizationResult(res.path[-1], res.iterations, res.path)
+    return OptResult(res.path[-1], res.iterations, res.path)
 
 
-def gradient_descend_dichotomy(start, dfs, f) -> OptimizationResult:
+def gradient_descend_dichotomy(start, dfs, f) -> OptResult:
     res = gradient_descend(f, dfs, start, dichotomy_method(0.05), 1000, stop_point_delta=1e-6)
-    return OptimizationResult(res.path[-1], res.iterations, res.path)
+    return OptResult(res.path[-1], res.iterations, res.path)
 
 
-def gradient_descend_golden_ratio(start, dfs, f) -> OptimizationResult:
+def gradient_descend_golden_ratio(start, dfs, f) -> OptResult:
     res = gradient_descend(f, dfs, start, golden_ratio_method(0.05), 1000, stop_point_delta=1e-6)
-    return OptimizationResult(res.path[-1], res.iterations, res.path)
+    return OptResult(res.path[-1], res.iterations, res.path)
 
 
-def scipy_nelder_mead_(start, dfs, f) -> OptimizationResult:
+def scipy_nelder_mead_(start, dfs, f) -> OptResult:
     path = []
 
     def callback(intermediate_result):
         path.append(intermediate_result['sim'])
 
     res = main.scipy_nelder_mead(f, start, callback=callback)
-    return OptimizationResult(res.x, res.nit, simplexes=path)
+    return OptResult(res.x, res.nit, simplexes=path)
 
 
 methods = [
@@ -79,7 +75,6 @@ methods = [
     # gradient_descend_golden_ratio,
     scipy_nelder_mead_,
 ]
-
 
 # def add_simplex_to_intermediate_result():
 #     import inspect
@@ -131,10 +126,3 @@ for coefs, func in zip(func_coefs, funcs):
                 title=title, save=False, text=text
             )
             # plot_func(func, res.path).show()
-
-
-
-
-
-
-
