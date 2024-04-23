@@ -32,7 +32,7 @@ funcs = [with_noise(gen_func(coefs)) for coefs in func_coefs]
 # for func in funcs:
 #     plot_func(func).show()
 
-from typing import Optional
+from typing_local import Optional
 from dataclasses import dataclass
 
 

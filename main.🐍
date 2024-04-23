@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Callable
+from typing_local import Callable
 
 import numpy as np
 import scipy

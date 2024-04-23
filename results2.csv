@@ -1,0 +1,37 @@
+,function,start_point,method,success,iterations,result,stop_reason
+0,x**2 + y**2,"(1, 1)",gradient_descent_constant_rate_001,False,1000,[0.13506452 0.13506452],StopReason.ITERATIONS
+1,x**2 + y**2,"(1, 1)",gradient_descent_constant_rate_0001,False,1000,[0.81871438 0.81871438],StopReason.ITERATIONS
+2,x**2 + y**2,"(1, 1)",scipy_nelder_mead_,True,54,[-3.37014990e-07 -8.87487948e-08],Optimization terminated successfully.
+3,x**2 + y**2,"(1, 1)",newton_descent_classic_next_point_01,True,987,[4.91968241e-05 4.91968241e-05],StopReason.FUNCTION_DELTA
+4,x**2 + y**2,"(1, 1)",newton_descent_linalg_next_point,True,2,[0. 0.],StopReason.FUNCTION_DELTA
+5,x**2 + y**2,"(1, 1)",scipy_newton_,True,2,[0. 0.],Optimization terminated successfully.
+6,x**2 + y**2,"(10, 10)",gradient_descent_constant_rate_001,False,1000,[1.35064522 1.35064522],StopReason.ITERATIONS
+7,x**2 + y**2,"(10, 10)",gradient_descent_constant_rate_0001,False,1000,[8.18714376 8.18714376],StopReason.ITERATIONS
+8,x**2 + y**2,"(10, 10)",scipy_nelder_mead_,True,61,[-1.55228134e-07  5.50406155e-07],Optimization terminated successfully.
+9,x**2 + y**2,"(10, 10)",newton_descent_classic_next_point_01,False,1000,[0.00043171 0.00043171],StopReason.ITERATIONS
+10,x**2 + y**2,"(10, 10)",newton_descent_linalg_next_point,True,2,[0. 0.],StopReason.FUNCTION_DELTA
+11,x**2 + y**2,"(10, 10)",scipy_newton_,True,2,[0. 0.],Optimization terminated successfully.
+12,x**2 + y**2,"(100, 100)",gradient_descent_constant_rate_001,False,1000,[13.50645224 13.50645224],StopReason.ITERATIONS
+13,x**2 + y**2,"(100, 100)",gradient_descent_constant_rate_0001,False,1000,[81.87143764 81.87143764],StopReason.ITERATIONS
+14,x**2 + y**2,"(100, 100)",scipy_nelder_mead_,True,68,[ 2.8917680e-07 -9.9698277e-08],Optimization terminated successfully.
+15,x**2 + y**2,"(100, 100)",newton_descent_classic_next_point_01,False,1000,[0.00431712 0.00431712],StopReason.ITERATIONS
+16,x**2 + y**2,"(100, 100)",newton_descent_linalg_next_point,True,2,[0. 0.],StopReason.FUNCTION_DELTA
+17,x**2 + y**2,"(100, 100)",scipy_newton_,True,2,[0. 0.],Optimization terminated successfully.
+18,(1 - x)**2 + 10*(-x**2 + y)**2,"(1, 1)",gradient_descent_constant_rate_001,True,1,[1. 1.],StopReason.FUNCTION_DELTA
+19,(1 - x)**2 + 10*(-x**2 + y)**2,"(1, 1)",gradient_descent_constant_rate_0001,True,1,[1. 1.],StopReason.FUNCTION_DELTA
+20,(1 - x)**2 + 10*(-x**2 + y)**2,"(1, 1)",scipy_nelder_mead_,True,37,[1. 1.],Optimization terminated successfully.
+21,(1 - x)**2 + 10*(-x**2 + y)**2,"(1, 1)",newton_descent_classic_next_point_01,True,1,[1. 1.],StopReason.FUNCTION_DELTA
+22,(1 - x)**2 + 10*(-x**2 + y)**2,"(1, 1)",newton_descent_linalg_next_point,True,1,[1. 1.],StopReason.FUNCTION_DELTA
+23,(1 - x)**2 + 10*(-x**2 + y)**2,"(1, 1)",scipy_newton_,True,1,[1. 1.],Optimization terminated successfully.
+24,(1 - x)**2 + 10*(-x**2 + y)**2,"(10, 10)",gradient_descent_constant_rate_001,True,8,[nan nan],StopReason.NAN
+25,(1 - x)**2 + 10*(-x**2 + y)**2,"(10, 10)",gradient_descent_constant_rate_0001,False,1000,[10.44364965  3.22644621],StopReason.ITERATIONS
+26,(1 - x)**2 + 10*(-x**2 + y)**2,"(10, 10)",scipy_nelder_mead_,True,96,[1.00000032 1.00000017],Optimization terminated successfully.
+27,(1 - x)**2 + 10*(-x**2 + y)**2,"(10, 10)",newton_descent_classic_next_point_01,False,1000,[4.75555096 2.18534341],StopReason.ITERATIONS
+28,(1 - x)**2 + 10*(-x**2 + y)**2,"(10, 10)",newton_descent_linalg_next_point,True,6,[1. 1.],StopReason.FUNCTION_DELTA
+29,(1 - x)**2 + 10*(-x**2 + y)**2,"(10, 10)",scipy_newton_,True,24,[1.00000001 1.        ],Optimization terminated successfully.
+30,(1 - x)**2 + 10*(-x**2 + y)**2,"(100, 100)",gradient_descent_constant_rate_001,True,6,[-inf  nan],StopReason.NAN
+31,(1 - x)**2 + 10*(-x**2 + y)**2,"(100, 100)",gradient_descent_constant_rate_0001,True,7,[nan nan],StopReason.NAN
+32,(1 - x)**2 + 10*(-x**2 + y)**2,"(100, 100)",scipy_nelder_mead_,True,153,[1.00000002 1.00000005],Optimization terminated successfully.
+33,(1 - x)**2 + 10*(-x**2 + y)**2,"(100, 100)",newton_descent_classic_next_point_01,False,1000,[8238.8866051    90.77183777],StopReason.ITERATIONS
+34,(1 - x)**2 + 10*(-x**2 + y)**2,"(100, 100)",newton_descent_linalg_next_point,True,5,[1. 1.],StopReason.FUNCTION_DELTA
+35,(1 - x)**2 + 10*(-x**2 + y)**2,"(100, 100)",scipy_newton_,True,57,[1.00000001 1.00000001],Optimization terminated successfully.

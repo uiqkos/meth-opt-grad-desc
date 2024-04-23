@@ -56,7 +56,7 @@ def R2_derivatives(coefs: np.ndarray | list[float] | dict[str, float]):
     ]
 
 
-def plot_func(f, path=(), limit=10):
+def plot_func(f, path=(), limit=10, label=''):
     if len(path) == 0:
         xmin = -limit
         xmax = limit
@@ -74,8 +74,8 @@ def plot_func(f, path=(), limit=10):
         ymin = max(abs(ymin), abs(ymax))
         ymax = -ymin
 
-    x = np.linspace(xmin, xmax, 100)
-    y = np.linspace(ymin, ymax, 100)
+    x = np.linspace(xmin, xmax, 1000)
+    y = np.linspace(ymin, ymax, 1000)
 
     X, Y = np.meshgrid(x, y)
 
@@ -84,24 +84,35 @@ def plot_func(f, path=(), limit=10):
     fig = go.Figure(data=[go.Surface(z=Z, x=X, y=Y)])
 
     # Extract x, y, and z coordinates from the path
-    path_x = [point[0] for point in path]
-    path_y = [point[1] for point in path]
-    path_z = [f(point) for point in path]
+    path_x = []
+    path_y = []
+    path_z = []
+
+    for point in path:
+        # if -limit < f(point) < limit:
+        path_x.append(point[0])
+        path_y.append(point[1])
+        path_z.append(f(point))
+
 
     if len(path) > 0:
         zmin = min(path_z)
         zmax = max(path_z)
-
+        #
         fig.update_scenes(zaxis=dict(range=[zmin, zmax]))
 
+    fig.update_scenes(zaxis=dict(range=[-limit, +limit]))
     # Add the path as a scatter plot on the surface plot
     fig.add_trace(go.Scatter3d(x=path_x, y=path_y, z=path_z,
                                mode='markers+lines', marker=dict(size=5),
                                name='Path'))
 
-    fig.update_layout(title=rf'${sympy.latex(f(sympy.symbols("x y")))}$', autosize=False,
+    fig.update_layout(title=label, autosize=False,
                       width=500, height=500,
                       margin=dict(l=65, r=50, b=65, t=90))
+
+    # color bar limit
+    fig.update_coloraxes(colorbar=dict(title='Z value', tickvals=[-limit, 0, limit], ticktext=[-limit, 0, limit]))
 
     # latex function label
     fig.update_layout(scene=dict(xaxis_title='x',
