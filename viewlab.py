@@ -247,8 +247,8 @@ def update_graph(
 
     # рисуем график
     plotable_f = fs.from_sympy_to_plotable_func(f)
-    x = np.linspace(-10, 10, 400)
-    y = np.linspace(-10, 10, 400)
+    x = np.linspace(x_lower_limit, x_upper_limit, 1000)
+    y = np.linspace(y_lower_limit, y_upper_limit, 1000)
     X, Y = np.meshgrid(x, y)
     Z = plotable_f([X, Y])
 
@@ -256,7 +256,7 @@ def update_graph(
 
     fig = go.Figure()
     # 3d поверхность
-    fig.add_trace(go.Surface(z=Z, x=X, y=Y, colorscale='Viridis', opacity=0.8, cmin=-1, cmax=2))
+    fig.add_trace(go.Surface(z=Z, x=X, y=Y, colorscale='Viridis', opacity=0.8, cmin=z_lower_limit, cmax=z_upper_limit))
     # путь градиента
     fig.add_trace(go.Scatter3d(x=path[:, 0], y=path[:, 1], z=plotable_f([path[:, 0], path[:, 1]]),
                                mode='lines+markers', marker=dict(size=6), line=dict(width=5, color='red')))
