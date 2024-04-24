@@ -3,9 +3,11 @@ from enum import Enum
 from typing import Callable
 
 import numpy as np
+import sympy
 
 Point = np.ndarray
 LearningRateFunction = Callable[[float, float, Callable[[Point], float], Point, Point], float]
+LearningRateFactoryFunction = Callable[[float], LearningRateFunction]
 RFunction = Callable[[Point], float]
 
 NewtonNextPointFunction = Callable[[RFunction, LearningRateFunction, Point, np.ndarray, np.ndarray], Point]
@@ -44,3 +46,6 @@ class GradientOptimizationResult(DescentOptimizationResult):
 @dataclass
 class NewtonOptimizationResult(DescentOptimizationResult):
     pass
+
+
+MinimizeSympyFunction = Callable[[sympy.Expr, Point, LearningRateFunction, int, float, float], OptimizationResult]

@@ -1,5 +1,7 @@
 from functools import wraps
 
+import sympy
+
 from typing_local import Callable, Point
 
 import numpy as np
@@ -28,3 +30,7 @@ def lambdify(f: sp.Expr) -> Callable[[Point], float]:
 def jacobi(f: sp.Expr) -> Callable[[Point], np.ndarray]:
     jac = sp.Matrix([f]).jacobian(list(f.free_symbols)).transpose()
     return lambda x: np.array(lambdify(jac)(x)).squeeze()
+
+
+def from_sympy_to_plotable_func(f):
+    return tupled(np.vectorize(sympy.lambdify(sympy.symbols('x y'), f, 'numpy')))

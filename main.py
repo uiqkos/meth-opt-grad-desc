@@ -38,7 +38,7 @@ def main():
     #                       max_iter=1000)
     # scipy_nelder_mead(f, np.array([10., 10.]))
     print("Newton descend")
-    pprint(newton_descend(f,
+    # pprint(newton_descend(f,
                           calculate_next_point_func=calculate_next_point_classic,
                           hess=fs.hessian(f_sp),
                           # hessian=calculate_hesse_matrix(f_sp, [x, y]),
