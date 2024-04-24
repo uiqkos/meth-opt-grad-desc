@@ -73,13 +73,13 @@ app.layout = html.Div([
                 html.P('Начальная точка', style={'margin-top': '10px'}),
                 html.Div([
                     html.Label('x:', style={'margin-right': '10px'}),
-                    dcc.Input(id='start-x', type='number', value=1, step=0.001),
+                    dcc.Input(id='start-x', type='number', value=1, step=0.000001),
 
                 ], style={'display': 'inline-block', 'margin-right': '10px'}),
 
                 html.Div([
                     html.Label('y:', style={'margin-right': '10px'}),
-                    dcc.Input(id='start-y', type='number', value=1, step=0.001),
+                    dcc.Input(id='start-y', type='number', value=1, step=0.000001),
 
                 ], style={'display': 'inline-block'}),
 
@@ -252,7 +252,7 @@ def update_graph(
     X, Y = np.meshgrid(x, y)
     Z = plotable_f([X, Y])
 
-    path = res.path
+    path = np.array(res.path)
 
     fig = go.Figure()
     # 3d поверхность
