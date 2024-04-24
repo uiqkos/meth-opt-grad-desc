@@ -94,7 +94,6 @@ def plot_func(f, path=(), limit=10, label=''):
         path_y.append(point[1])
         path_z.append(f(point))
 
-
     if len(path) > 0:
         zmin = min(path_z)
         zmax = max(path_z)
@@ -209,6 +208,11 @@ def plot_2d_with_color(f, path=(), limit=10):
 
 
 from matplotlib.colors import LinearSegmentedColormap
+
+
+def get_color(index, total_triangles):
+    colors = np.linspace(0, 1, total_triangles)  # Creates a gradient scale from 0 to 1
+    return f"hsl({colors[index] * 240}, 100%, 50%)"  # Hue ranges from blue to red
 
 
 def create_gradient_colormap(n_colors):

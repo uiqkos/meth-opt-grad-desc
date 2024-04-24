@@ -15,6 +15,8 @@ from dash.dependencies import Input, Output
 import dash_daq as daq
 import plotly.graph_objects as go
 
+from utils import create_gradient_colormap, get_color
+
 
 class Settings:
     LearningRateStrategies: List[LearningRateFactoryFunction] = [
@@ -252,14 +254,22 @@ def update_graph(
     X, Y = np.meshgrid(x, y)
     Z = plotable_f([X, Y])
 
-    path = np.array(res.path)
-
     fig = go.Figure()
     # 3d поверхность
     fig.add_trace(go.Surface(z=Z, x=X, y=Y, colorscale='Viridis', opacity=0.8, cmin=z_lower_limit, cmax=z_upper_limit))
-    # путь градиента
-    fig.add_trace(go.Scatter3d(x=path[:, 0], y=path[:, 1], z=plotable_f([path[:, 0], path[:, 1]]),
-                               mode='lines+markers', marker=dict(size=6), line=dict(width=5, color='red')))
+
+    match res:
+        case DescentOptimizationResult(_, _, _, _, path):
+            path = np.array(path)
+            # путь градиента
+            fig.add_trace(go.Scatter3d(x=path[:, 0], y=path[:, 1], z=plotable_f([path[:, 0], path[:, 1]]),
+                                       mode='lines+markers', marker=dict(size=6), line=dict(width=5, color='red')))
+        case SimplexOptimizationResult(_, _, _, _, simplexes):
+            for i, simplex in enumerate(simplexes):
+                fig.add_trace(
+                    go.Scatter3d(x=simplex[:, 0], y=simplex[:, 1], z=plotable_f([simplex[:, 0], simplex[:, 1]]),
+                                 mode='lines+markers', showlegend=False, marker=dict(size=6),
+                                 line=dict(width=5, color=get_color(i, len(simplexes)))))
 
     fig.update_layout(scene=dict(zaxis=dict(nticks=10, range=[z_lower_limit, z_upper_limit]),
                                  xaxis=dict(nticks=10, range=[x_lower_limit, x_upper_limit]),
@@ -280,7 +290,7 @@ def update_graph(
                 html.Br(),
                 f'время выполнения: {elapsed_time} секунд',
                 html.Br(),
-                f'минимум функции: {res.result}',
+                f'минимум функции: {res.result.tolist()}',
 
             ])
 
