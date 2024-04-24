@@ -17,7 +17,7 @@ def hessian(f: sp.Expr) -> Callable[[Point], np.ndarray]:
 
 def lambdify(f: sp.Expr) -> Callable[[Point], float]:
     def lambdified(x):
-        lam = f.evalf(subs={k: v for k, v in zip(f.free_symbols, x)})
+        lam = f.evalf(subs={k: v for k, v in zip(sorted(list(f.free_symbols), key=str), x)})
 
         if lam.is_Matrix:
             return np.array(lam).astype('float64')
@@ -28,7 +28,7 @@ def lambdify(f: sp.Expr) -> Callable[[Point], float]:
 
 
 def jacobi(f: sp.Expr) -> Callable[[Point], np.ndarray]:
-    jac = sp.Matrix([f]).jacobian(list(f.free_symbols)).transpose()
+    jac = sp.Matrix([f]).jacobian(sorted(list(f.free_symbols), key=str)).transpose()
     return lambda x: np.array(lambdify(jac)(x)).squeeze()
 
 
