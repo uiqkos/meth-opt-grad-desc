@@ -10,6 +10,8 @@ import scipy
 import sympy
 
 import funcs as fs
+from nelder import scipy_nelder_mead
+from newton import newton_descend, scipy_newton_cg
 from utils import tupled, derivative
 from typing_local import *
 

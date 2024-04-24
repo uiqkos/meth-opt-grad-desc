@@ -69,13 +69,13 @@ def golden_ratio_method(stop_delta: float) -> LearningRateFunction:
 
 
 def gradient_descend(
-    func: Callable[[Point], float],
-    jac: Callable[[Point], np.ndarray],
-    start: Point,
-    learning_rate_function: LearningRateFunction,
-    max_iter: int, *,
-    stop_function_delta: Optional[float] = None,
-    stop_point_delta: Optional[float] = None,
+        func: Callable[[Point], float],
+        jac: Callable[[Point], np.ndarray],
+        start: Point,
+        learning_rate_function: LearningRateFunction,
+        max_iter: int, *,
+        stop_function_delta: Optional[float] = None,
+        stop_point_delta: Optional[float] = None,
 ) -> GradientOptimizationResult:
     if (stop_function_delta is not None) and stop_function_delta < 0:
         raise ValueError("Условие останова по значениям функции должно быть положительным")
@@ -108,3 +108,22 @@ def gradient_descend(
         success=stop_reason != StopReason.ITERATIONS,
         path=np.array(path),
     )
+
+
+def gradient_and_newton(
+        func,
+        newton_minimize_function: NewtonFunction,
+        calculate_next_point_func: NewtonNextPointFunction,
+        hess: Callable[[Point], np.ndarray],
+        jac: Callable[[Point], np.ndarray],
+        start: Point,
+        learning_rate_function: LearningRateFunction,
+        max_iter: int, *,
+        stop_function_delta: Optional[float] = None,
+        stop_point_delta: Optional[float] = None, ):
+    grad_res = gradient_descend(func, jac, start, learning_rate_function, max_iter,
+                                stop_function_delta=stop_function_delta,
+                                stop_point_delta=stop_point_delta)
+    return newton_minimize_function(func, calculate_next_point_func, hess, jac, grad_res.result, learning_rate_function,
+                                    max_iter, stop_function_delta, stop_point_delta)
+
