@@ -262,8 +262,10 @@ def update_graph(
         case DescentOptimizationResult(_, _, _, _, path):
             path = np.array(path)
             # путь градиента
-            fig.add_trace(go.Scatter3d(x=path[:, 0], y=path[:, 1], z=plotable_f([path[:, 0], path[:, 1]]),
-                                       mode='lines+markers', marker=dict(size=6), line=dict(width=5, color='red')))
+            for i, point in enumerate(path):
+                fig.add_trace(go.Scatter3d(x=[point[0]], y=[point[1]], z=[plotable_f([point[0], point[1]])],
+                                           mode='markers', showlegend=False,
+                                           marker=dict(size=6), line=dict(width=5, color=get_color(i, len(path)))))
         case SimplexOptimizationResult(_, _, _, _, simplexes):
             for i, simplex in enumerate(simplexes):
                 fig.add_trace(

@@ -2,34 +2,32 @@ import scipy
 
 from typing_local import *
 
-fixed_nelder_mead = False
-
 
 def add_sim():
-    global fixed_nelder_mead
-
-    if fixed_nelder_mead:
-        return
-
     import inspect
 
-    code = inspect.getsource(scipy.optimize._optimize._minimize_neldermead)
-    marker = 'intermediate_result = OptimizeResult(x=sim[0], fun=fsim[0])'
-    need_to_add = "intermediate_result['sim'] = sim"
-
-    if need_to_add in code:
+    try:
+        nelder_code = inspect.getsource(scipy.optimize._optimize._minimize_neldermead)
+        minimize_code = inspect.getsource(scipy.optimize.minimize)
+    except OSError:
         return
 
-    idx = code.index(marker) + len(marker)
-    code = code[:idx] + '; ' + need_to_add + code[idx:]
+    marker = 'intermediate_result = OptimizeResult(x=sim[0], fun=fsim[0])'
+    sim_code = "intermediate_result['sim'] = sim"
+
+    if sim_code in nelder_code:
+        return
+
+    idx = nelder_code.index(marker) + len(marker)
+    nelder_code = nelder_code[:idx] + '; ' + sim_code + nelder_code[idx:]
 
     ns = {}
-    exec(code, scipy.optimize._optimize.__dict__, ns)
-    exec(inspect.getsource(scipy.optimize.minimize),
-         scipy.optimize._minimize.__dict__ | ns, ns)
-    scipy.optimize.minimize = ns['minimize']
+    exec(nelder_code, scipy.optimize._optimize.__dict__, ns)  # exec(code, globals, locals)
 
-    fixed_nelder_mead = True
+    exec(minimize_code,
+         scipy.optimize._minimize.__dict__ | ns, ns)  # ns = {'_minimize_neldermead': ...}
+
+    scipy.optimize.minimize = ns['minimize']  # ns = {'_minimize_neldermead': ..., 'minimize': ...}
 
 
 def scipy_nelder_mead(f: RFunction, x0: Point, max_iterations=1000, verbose=True, *args, **kwargs):

@@ -118,12 +118,20 @@ def gradient_and_newton(
         jac: Callable[[Point], np.ndarray],
         start: Point,
         learning_rate_function: LearningRateFunction,
-        max_iter: int, *,
+        max_iter: int,
         stop_function_delta: Optional[float] = None,
         stop_point_delta: Optional[float] = None, ):
     grad_res = gradient_descend(func, jac, start, learning_rate_function, max_iter,
                                 stop_function_delta=stop_function_delta,
                                 stop_point_delta=stop_point_delta)
-    return newton_minimize_function(func, calculate_next_point_func, hess, jac, grad_res.result, learning_rate_function,
+    newton_res = newton_minimize_function(func, calculate_next_point_func, hess, jac, grad_res.result, learning_rate_function,
                                     max_iter, stop_function_delta, stop_point_delta)
+
+    return GradientOptimizationResult(
+        result=newton_res.result,
+        iterations=grad_res.iterations + newton_res.iterations,
+        stop_reason=newton_res.stop_reason,
+        success=newton_res.success,
+        path=np.concatenate((grad_res.path, newton_res.path[1:]))
+    )
 

@@ -50,4 +50,4 @@ class NewtonOptimizationResult(DescentOptimizationResult):
 
 MinimizeSympyFunction = Callable[[sympy.Expr, Point, LearningRateFunction, int, float, float], OptimizationResult]
 NewtonFunction = Callable[[RFunction, NewtonNextPointFunction, Callable[[Point], np.ndarray],
-                           Callable[[Point], np.ndarray], Point, LearningRateFunction, int, float, float], OptimizationResult]
+                           Callable[[Point], np.ndarray], Point, LearningRateFunction, int, float, float], GradientOptimizationResult]

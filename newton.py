@@ -1,4 +1,5 @@
 from typing import Optional
+import lbfgs
 
 import scipy
 
@@ -34,7 +35,7 @@ def newton_descend(
     jac: Callable[[Point], np.ndarray],
     start: Point,
     learning_rate_function: LearningRateFunction,
-    max_iter: int, *,
+    max_iter: int,
     stop_function_delta: Optional[float] = None,
     stop_point_delta: Optional[float] = None,
 ) -> NewtonOptimizationResult:
@@ -75,11 +76,42 @@ def newton_descend(
 def scipy_newton_cg(f: RFunction, jac, hessian, x0: Point, max_iterations=1000, verbose=True):
     res = scipy.optimize.minimize(
         f, x0, jac=jac,
-        method='Newton-CG', options={'xtol': 1e-8, 'disp': True}
+        method='Newton-CG', options={'xtol': 1e-8,
+                                     'disp': False,
+                                     'return_all': True,
+                                     'maxiter': max_iterations}
     )
-
     return NewtonOptimizationResult(
-        path=[], result=res.x, iterations=res.nit,
+        path=[x0] + res.allvecs, result=res.x, iterations=res.nit,
         stop_reason=res.message,
         success=res.success
+    )
+
+
+def pylbfgs_lbfgs(
+    f: RFunction,
+    jac: Callable[[Point], np.ndarray],
+    x0: Point,
+):
+    l = lbfgs.LBFGS()
+
+    def fg(x, g):
+        g[:] = jac(x)
+        return f(x)
+
+    path = [x0]
+    iters = [0]
+
+    # callable(x, g, fx, xnorm, gnorm, step, k, num_eval, *args)
+    def callback(x, g, fx, xnorm, gnorm, step, k, num_eval, *args):
+        path.append(x)
+        iters[0] = k
+
+    res = l.minimize(fg, x0, callback)
+
+    return DescentOptimizationResult(
+        res, iters[0],
+        stop_reason=StopReason.ITERATIONS,
+        success=True,
+        path=path + [res]
     )

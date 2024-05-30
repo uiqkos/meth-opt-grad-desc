@@ -1,14 +1,9 @@
-import numpy as np
-import pandas as pd
-import sympy
 import sympy as sp
+
 import funcs as fs
 from grad_desc import *
-from newton import *
 from nelder import *
-
-from newton import calculate_next_point_classic
-import utils as u
+from newton import *
 from typing_local import *
 
 
@@ -96,12 +91,53 @@ def scipy_newton_(
     stop_point_delta: float = 1e-10,
     stop_function_delta: float = 1e-10
 ):
-    return scipy_newton_cg(
+    res = scipy_newton_cg(
         fs.lambdify(func),
         jac=fs.jacobi(func),
         hessian=fs.hessian(func),
         x0=start_point,
         max_iterations=max_iter,
+    )
+
+    print(res.path)
+
+    return res
+
+
+def grad_desc_and_then_classic_newton(
+    func: sp.Expr,
+    start_point: Point,
+    learning_rate_function: LearningRateFunction,
+    max_iter: int = 1000,
+    stop_point_delta: float = 1e-10,
+    stop_function_delta: float = 1e-10
+):
+    return gradient_and_newton(
+        fs.lambdify(func),
+        newton_minimize_function=newton_descend,
+        calculate_next_point_func=calculate_next_point_classic,
+        hess=fs.hessian(func),
+        jac=fs.jacobi(func),
+        start=start_point,
+        learning_rate_function=learning_rate_function,
+        max_iter=max_iter,
+        stop_point_delta=stop_point_delta,
+        stop_function_delta=stop_function_delta
+    )
+
+
+def pylbfgs_lbfgs_(
+    func: sp.Expr,
+    start_point: Point,
+    learning_rate_function: LearningRateFunction,
+    max_iter: int = 1000,
+    stop_point_delta: float = 1e-10,
+    stop_function_delta: float = 1e-10
+):
+    return pylbfgs_lbfgs(
+        fs.lambdify(func),
+        jac=fs.jacobi(func),
+        x0=start_point,
     )
 
 
@@ -111,4 +147,6 @@ methods = [
     newton_descent_classic_next_point,
     newton_descent_linalg_next_point,
     scipy_newton_,
+    pylbfgs_lbfgs_,
+    grad_desc_and_then_classic_newton,
 ]
