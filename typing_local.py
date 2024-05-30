@@ -6,6 +6,7 @@ import numpy as np
 import sympy
 
 Point = np.ndarray
+Vector = np.ndarray
 LearningRateFunction = Callable[[float, float, Callable[[Point], float], Point, Point], float]
 LearningRateFactoryFunction = Callable[[float], LearningRateFunction]
 RFunction = Callable[[Point], float]
@@ -17,6 +18,8 @@ class StopReason(Enum):
     ITERATIONS: str = "iterations"
     FUNCTION_DELTA: str = "function_delta"
     POINT_DELTA: str = "point_delta"
+    GRADIENT_NORM: str = "gradient_norm"
+    EPOCH: str = "epoch_number"
     NAN: str = "nan"
 
 
@@ -41,6 +44,11 @@ class DescentOptimizationResult(OptimizationResult):
 @dataclass
 class GradientOptimizationResult(DescentOptimizationResult):
     pass
+
+
+@dataclass
+class StochasticGradientOptimizationResult(GradientOptimizationResult):
+    loss: float
 
 
 @dataclass
