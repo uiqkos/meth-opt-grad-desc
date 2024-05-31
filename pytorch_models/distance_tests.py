@@ -1,7 +1,9 @@
 import time
 
+import numpy as np
 import torch
 from torch import optim
+from distance_numpy import gradient_descent
 
 from pytorch_models.distance_model import DistanceEmbeddingModel, loss_fn
 from pytorch_models.testing import load_pic, plot_train_and_test
@@ -34,19 +36,20 @@ def callback(epoch, loss, points):
     plt.savefig(f'../images/1/epoch_{epoch}.png')
 
     time.sleep(0.1)
-
-
-model = DistanceEmbeddingModel(
-    optimizer=lambda params: optim.SGD(params, lr=0.001),
-    criterion=loss_fn,
-    num_points=num_points, embedding_dim=embedding_dim)
-
-losses = model.fit(D, epochs=num_iterations, callback=callback)
-
-print("Final Embeddings:")
-print(final_embeddings)
-
-final_embeddings = sgd(X, D, learning_rate, num_iterations)
+#
+#
+# model = DistanceEmbeddingModel(
+#     optimizer=lambda params: optim.SGD(params, lr=0.001),
+#     criterion=loss_fn,
+#     num_points=num_points, embedding_dim=embedding_dim)
+#
+# losses = model.fit(D, epochs=num_iterations, callback=callback)
+#
+# print("Final Embeddings:")
+# print(final_embeddings)
+X_ = np.random.randn(*X.shape)
+# plt.scatter(X_[:, 0], X_[:, 1], label='Predictions')
+final_embeddings = gradient_descent(X_, D, learning_rate, 20)
 plt.scatter(X[:, 0], X[:, 1], label='True Data', color='red')
 plt.scatter(final_embeddings[:, 0], final_embeddings[:, 1], label='Predictions')
 

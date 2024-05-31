@@ -179,7 +179,8 @@ def stochastic_gradient_descent(
         max_iter: int, *,
         stop_grad_norm: Optional[float] = None,
         stop_epoch_number: Optional[int] = None,
-        calculate_loss: Optional[bool] = False) -> StochasticGradientOptimizationResult:
+        calculate_loss: Optional[bool] = False
+) -> StochasticGradientOptimizationResult:
     dim = start.size
     if (stop_grad_norm is not None) and stop_grad_norm < 0:
         raise ValueError("Условие останова по норме градиента должно быть положительным")
@@ -197,30 +198,41 @@ def stochastic_gradient_descent(
     np.random.shuffle(indexes)
     epoch = 0
     loss = None
+
     if calculate_loss:
         loss = loss_calculator(start)
+
     start_index = 0
+
     for _ in range(max_iter):
         grad = np.zeros(dim)
+
         for i in indexes[start_index:start_index + batch_size]:
             grad += objective_func_term_derivative(path[-1], i)
         grad /= batch_size
+
         new_point = path[-1] - learning_rate * grad
+
         if calculate_loss:
             loss = loss_calculator(new_point)
+
         path.append(new_point)
         start_index += batch_size
+
         if start_index + batch_size >= data_size:
             epoch += 1
             learning_rate = learning_rate_function(epoch)
             np.random.shuffle(indexes)
             start_index = 0
+
         if np.isnan(new_point).any():
             stop_reason = StopReason.NAN
             break
+
         if (stop_grad_norm is not None) and np.linalg.norm(grad) < stop_grad_norm:
             stop_reason = StopReason.GRADIENT_NORM
             break
+
         if (stop_epoch_number is not None) and epoch >= stop_epoch_number:
             stop_reason = StopReason.EPOCH
             break

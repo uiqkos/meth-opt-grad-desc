@@ -1,5 +1,7 @@
 import numpy as np
 
+from pytorch_models.testing import load_pic
+
 
 def loss(X, D):
     N = X.shape[0]
@@ -31,8 +33,5 @@ def gradient_descent(X, D, learning_rate=0.0001, num_iterations=1000):
     for i in range(num_iterations):
         grad = compute_gradient(X, D)
         X -= learning_rate * grad
-
-        if i % 100 == 0:
-            print(f'Iteration {i + 1}, Loss: {loss(X, D)}')
 
     return X

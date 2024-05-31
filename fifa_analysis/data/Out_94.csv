@@ -1,0 +1,498 @@
+"",coef
+Club_Real Madrid,2.288612
+Body Type_Neymar,2.155534
+Club_Manchester City,2.145934
+Club_FC Barcelona,2.025629
+Club_Juventus,1.973812
+Body Type_Messi,1.808259
+Club_FC Bayern Mnchen,1.474276
+Club_Paris Saint-Germain,1.472419
+Body Type_Lean,-1.433074
+Body Type_Normal,-1.429053
+Club_Atltico Madrid,1.418579
+Body Type_Stocky,-1.408032
+Club_Napoli,1.300939
+Club_Tottenham Hotspur,1.293986
+Position_LF,1.201951
+Club_Inter,1.194773
+Club_Chelsea,1.104491
+Club_Liverpool,0.973309
+Body Type_PLAYER_BODY_TYPE_25,0.961877
+Club_Manchester United,0.825999
+Club_Valencia CF,0.781210
+Body Type_C. Ronaldo,0.685456
+Overall,0.639075
+Position_RF,0.584449
+Club_Lazio,0.481162
+Club_Bayer 04 Leverkusen,0.465213
+Club_Olympique Lyonnais,0.445943
+Club_Real Betis,0.443202
+Club_Bray Wanderers,0.427599
+Club_RB Leipzig,0.426100
+Nationality_Gabon,0.393389
+Club_Morecambe,0.390225
+Club_Girona FC,0.384679
+Club_Arsenal,0.381861
+Club_Fenerbahe SK,-0.380583
+Club_Milan,0.358499
+International Reputation,0.358121
+Club_Sevilla FC,0.346133
+Club_Stoke City,-0.335417
+Club_Be?ikta? JK,-0.332146
+Club_SL Benfica,0.326124
+Club_Real Sociedad,0.323405
+Club_Roma,0.320412
+Club_Limerick FC,0.315535
+Club_Hebei China Fortune FC,-0.308087
+Nationality_China PR,0.299592
+Club_SC Braga,0.295104
+Club_AS Saint-tienne,-0.291669
+Age,-0.287189
+Club_Tranmere Rovers,0.286520
+Club_Levante UD,0.283380
+Club_FC Porto,0.282923
+Club_St. Patrick's Athletic,0.270632
+Club_Deportivo Alavs,0.267397
+Club_Bohemian FC,0.263357
+Club_Macclesfield Town,0.257948
+Club_Swansea City,-0.256415
+Club_Sporting CP,0.240772
+Club_Medipol Ba?ak?ehir FK,-0.239768
+Club_RC Celta,0.238144
+Preferred Foot_Left,0.231641
+Preferred Foot_Right,0.226085
+Club_Waterford FC,0.221220
+Club_Getafe CF,0.220069
+Club_Frosinone,-0.219139
+Club_Stade Rennais FC,-0.218417
+Club_Jeonbuk Hyundai Motors,-0.218163
+Club_Cambridge United,0.217835
+Club_RSC Anderlecht,-0.216592
+Club_Hamilton Academical FC,0.214322
+Club_Newport County,0.210247
+Club_Cagliari,-0.210227
+Club_SG Dynamo Dresden,-0.210146
+Club_LA Galaxy,-0.205212
+Club_Neuchtel Xamax,0.200686
+Club_FC Thun,0.199782
+Club_Crewe Alexandra,0.199251
+Club_Hamburger SV,-0.199194
+Club_Club Atltico Banfield,-0.198939
+Club_West Bromwich Albion,-0.197652
+Club_CD Nacional,-0.197582
+Club_SC Heerenveen,-0.194538
+Club_Carlisle United,0.191822
+Club_Sligo Rovers,0.190343
+Nationality_Egypt,0.189537
+Club_Lincoln City,0.188319
+Club_Derry City,0.181387
+Club_SD Eibar,0.180798
+Club_Atlanta United,0.177841
+Club_Grmio,0.174538
+Club_Zag??bie Sosnowiec,0.172711
+Club_Vitria de Setbal,-0.171946
+Club_Dalian YiFang FC,0.166110
+Club_Shakhtar Donetsk,0.166030
+Club_Clube Sport Martimo,-0.162899
+Club_FC Metz,-0.162866
+Club_Borussia Dortmund,0.161180
+Club_Al Ittihad,-0.160297
+Club_Rio Ave FC,-0.160231
+Club_Gyeongnam FC,0.159927
+Club_Atltico Mineiro,0.159772
+Club_Burnley,0.158450
+Club_Derby County,-0.158014
+Club_Bournemouth,0.157942
+Club_Moreirense FC,-0.157895
+Nationality_Saudi Arabia,0.157049
+Club_1. FC Kln,-0.156221
+Club_Trelleborgs FF,0.155778
+Club_KV Oostende,-0.152637
+Club_Universidad de Chile,-0.152101
+Club_San Lorenzo de Almagro,-0.151828
+Club_Port Vale,0.151736
+Club_Stevenage,0.151609
+Club_SK Rapid Wien,-0.149863
+Club_Olympique de Marseille,0.148496
+Club_Dalkurd FF,0.148038
+Club_Boyac Chic FC,0.146406
+Nationality_Romania,-0.145840
+Nationality_Cameroon,-0.144580
+Club_AC Horsens,0.144128
+Club_Cork City,0.143846
+Club_FC Augsburg,-0.143355
+Club_TSG 1899 Hoffenheim,0.140492
+Club_Boca Juniors,0.140056
+Club_Dinamo Zagreb,-0.137719
+Club_Grimsby Town,0.134364
+Club_Fortuna Sittard,-0.134070
+Club_VfL Bochum 1848,-0.132323
+Club_Waasland-Beveren,-0.132134
+Club_SpVgg Greuther Frth,-0.131081
+Club_Villarreal CF,0.130418
+Club_1. FC Magdeburg,-0.130115
+Club_Reading,-0.129450
+Club_AZ Alkmaar,-0.128984
+Club_Guangzhou Evergrande Taobao FC,-0.128911
+Club_SnderjyskE,0.128765
+Club_Sunderland,-0.128200
+Club_Royal Antwerp FC,-0.128098
+Nationality_Ecuador,-0.128046
+Club_Al Shabab,-0.128035
+Club_Peterborough United,-0.127537
+Club_Northampton Town,0.127144
+Club_Shanghai Greenland Shenhua FC,-0.125389
+Club_Crawley Town,0.124457
+Club_Kayserispor,-0.123383
+Nationality_Georgia,-0.123245
+Club_PFC CSKA Moscow,-0.122561
+Club_Fiorentina,0.122163
+Club_Nmes Olympique,-0.122123
+Club_Norwich City,-0.121152
+Club_Athletic Club de Bilbao,0.120519
+Club_KAA Gent,-0.118709
+Club_Stade de Reims,-0.118426
+Club_SV Darmstadt 98,-0.118174
+Club_Hannover 96,-0.117639
+Club_FC Ingolstadt 04,-0.117562
+Club_Portimonense SC,-0.117037
+Club_Genoa,-0.116218
+Club_Sporting Lokeren,-0.115446
+Club_Curic Unido,0.112749
+Club_FC Utrecht,-0.112600
+Club_Jiangsu Suning FC,-0.112177
+Club_Club Deportes Temuco,0.111850
+Club_Kasimpa?a SK,-0.111795
+Position_LAM,-0.107953
+Club_MSV Duisburg,-0.106132
+Club_Chievo Verona,-0.105791
+Club_Rosenborg BK,-0.105655
+Club_RCD Espanyol,0.105369
+Club_FC Kbenhavn,-0.105250
+Club_Cosenza,0.105150
+Work Rate_High/ High,0.104527
+Club_FC Nantes,-0.104524
+Club_FC Girondins de Bordeaux,-0.104339
+Club_Os Belenenses,-0.103331
+Club_PSV,0.102100
+Nationality_Slovakia,0.100768
+Club_FC Groningen,-0.100475
+Club_Chongqing Dangdai Lifan FC SWM Team,0.098872
+Club_IK Sirius,0.098862
+Nationality_Spain,-0.097894
+Club_La Berrichonne de Chteauroux,0.097074
+Club_Brentford,-0.096977
+Club_FC St. Pauli,-0.095969
+Club_Hull City,-0.095480
+Club_Sandefjord Fotball,0.094204
+Club_Birmingham City,-0.094072
+Club_Oldham Athletic,0.093883
+Club_Sampdoria,-0.093505
+Position_CM,0.093452
+Club_Al Batin,0.092152
+Club_Aston Villa,-0.091620
+Club_Hellas Verona,-0.090332
+Position_RCM,0.090198
+Club_Wigan Athletic,-0.089584
+Nationality_Belgium,0.089501
+Club_CD Tondela,-0.088799
+Club_SV Zulte-Waregem,-0.087708
+Club_St. Mirren,0.087074
+Nationality_Japan,0.086894
+Nationality_Uruguay,0.086417
+Club_KSV Cercle Brugge,-0.086230
+Club_Wolverhampton Wanderers,0.085718
+Club_Colo-Colo,-0.085343
+Nationality_Greece,-0.085280
+Reactions,0.085140
+Club_Hokkaido Consadole Sapporo,0.084831
+Club_Santa Clara,-0.084552
+Club_Toulouse Football Club,-0.084434
+Nationality_Albania,-0.084257
+Body Type_Shaqiri,-0.084179
+Club_Gztepe SK,-0.083913
+Club_Esbjerg fB,0.083624
+Club_Melbourne Victory,-0.083455
+Club_Al Wehda,-0.082422
+Club_Sint-Truidense VV,-0.082305
+Club_KV Kortrijk,-0.081852
+Club_SPAL,-0.081725
+Club_Benevento,-0.081645
+Club_Beijing Sinobo Guoan FC,-0.081440
+LB,-0.081428
+RB,-0.081428
+Club_Legia Warszawa,-0.081265
+Club_AS Bziers,0.081188
+Club_1. FC Union Berlin,-0.081180
+Club_DC United,-0.080886
+Club_IF Brommapojkarna,0.080692
+Club_SV Meppen,0.080556
+Position_LCM,0.078761
+Club_Exeter City,0.077210
+Club_1. FC Heidenheim 1846,-0.076531
+Club_DSC Arminia Bielefeld,-0.076362
+Club_V-Varen Nagasaki,0.076203
+Nationality_Italy,-0.076125
+Club_FK Austria Wien,-0.075187
+Club_Hammarby IF,-0.074046
+Club_Shrewsbury,0.073971
+Nationality_Canada,0.073809
+Club_Nottingham Forest,-0.073556
+Position_ST,-0.073219
+Club_Palermo,-0.073135
+Club_AJ Auxerre,-0.072660
+Club_rebro SK,0.072493
+Club_Panathinaikos FC,-0.072189
+Nationality_Peru,-0.071817
+Nationality_Denmark,0.070655
+Club_Al Hilal,-0.070627
+Club_Hobro IK,0.070604
+Club_Hertha BSC,-0.070307
+Club_Heart of Midlothian,-0.070108
+Club_Molde FK,-0.069724
+Club_Willem II,-0.069529
+Club_Boavista FC,-0.069276
+Club_Lechia Gda?sk,-0.068602
+Nationality_Ghana,-0.068308
+Club_Notts County,0.068054
+Club_Blackpool,0.068036
+Club_U.N.A.M.,-0.067809
+Club_Nagoya Grampus,-0.067571
+Club_Preston North End,-0.067562
+Club_Brescia,-0.067227
+Nationality_Czech Republic,-0.067152
+Club_SD Huesca,0.066893
+Nationality_Turkey,0.066319
+Club_Chicago Fire,-0.065552
+Club_FC Carl Zeiss Jena,0.064500
+Club_Blackburn Rovers,-0.063808
+Club_Fortuna Dsseldorf,-0.063807
+Club_HJK Helsinki,0.063668
+Club_Southampton,-0.063275
+Club_Bury,0.061782
+Potential,-0.061334
+Nationality_Australia,0.060994
+Nationality_Jamaica,0.060921
+Nationality_Republic of Ireland,0.060338
+Club_FC Energie Cottbus,0.060137
+Club_GD Chaves,-0.059837
+Club_Suwon Samsung Bluewings,-0.059677
+Club_Swindon Town,0.059022
+Club_Vitesse,-0.058942
+Nationality_Norway,0.058206
+Club_CD Feirense,-0.058097
+Club_Racing Club de Lens,-0.057852
+Club_SC Freiburg,-0.057582
+Club_Club Amrica,-0.057040
+Club_Livingston FC,0.055609
+Nationality_Poland,0.055588
+Club_Al Fateh,0.055500
+Nationality_Switzerland,-0.055256
+Club_Defensa y Justicia,-0.055120
+Vision,0.055090
+Nationality_Cape Verde,0.054668
+Club_Trabzonspor,-0.054348
+Finishing,0.054179
+Club_BK Hcken,0.053838
+Club_Unin de Santa Fe,-0.052919
+Nationality_Nigeria,-0.052514
+Club_?l?sk Wroc?aw,0.052490
+Position_RWB,0.052483
+Nationality_Venezuela,-0.052413
+Work Rate_Medium/ Low,-0.052343
+Position_RS,-0.051728
+Nationality_Wales,0.051354
+Club_Heracles Almelo,-0.050770
+Club_Cheltenham Town,0.050621
+Club_Itag Leones FC,0.050569
+Nationality_Brazil,0.050282
+Club_Tianjin TEDA FC,0.050156
+Club_FC Erzgebirge Aue,-0.049985
+Nationality_Netherlands,-0.049717
+Nationality_Senegal,0.049601
+Work Rate_High/ Medium,0.049140
+Club_Montreal Impact,-0.049113
+Club_Club Atltico Coln,-0.049021
+Club_Real Zaragoza,-0.048246
+Club_Kawasaki Frontale,-0.047729
+Club_Shamrock Rovers,0.046651
+Club_Shanghai SIPG FC,-0.046449
+Club_PEC Zwolle,-0.046050
+Nationality_Costa Rica,-0.045724
+Club_1. FC Nrnberg,-0.045692
+Club_TSV 1860 Mnchen,0.045388
+Position_LDM,0.045282
+Nationality_Bosnia Herzegovina,0.044377
+Club_SV Mattersburg,0.044298
+Stamina,0.043966
+Work Rate_Low/ Medium,0.043640
+Club_En Avant de Guingamp,-0.043591
+Club_FC Midtjylland,-0.043506
+ShotPower,-0.042991
+LAM,-0.042761
+CAM,-0.042761
+RAM,-0.042761
+Club_Wolfsberger AC,0.042089
+Club_Club Atltico Lans,-0.042075
+Club_MKE Ankaragc,-0.041888
+Club_Club Atltico Talleres,-0.041715
+Club_Atltico Bucaramanga,0.041337
+Club_ESTAC Troyes,-0.040757
+Club_CD Aves,-0.039577
+Club_Monterrey,-0.039143
+Club_Le Havre AC,-0.039017
+Club_FK Bod/Glimt,0.038728
+Club_Deportivo Cali,-0.038131
+Nationality_Scotland,0.038053
+Club_KAS Eupen,-0.038011
+Nationality_Burkina Faso,-0.037690
+Position_RDM,0.037553
+Nationality_Hungary,-0.037351
+Acceleration,0.037248
+Nationality_Ivory Coast,-0.037229
+Club_FC Schalke 04,0.037204
+Nationality_United States,-0.037140
+Club_Crotone,-0.036973
+Positioning,0.036771
+Nationality_Portugal,0.036062
+Club_Columbus Crew SC,-0.035873
+Club_Ipswich Town,-0.035686
+Club_Foggia,0.035666
+Club_Tianjin Quanjian FC,-0.035618
+Club_Royal Excel Mouscron,-0.035380
+Club_Sporting de Charleroi,-0.035225
+Club_CD Everton de Via del Mar,0.034752
+Club_SV Sandhausen,-0.034499
+Club_Shandong Luneng TaiShan FC,-0.034394
+Work Rate_Low/ Low,-0.033756
+FKAccuracy,0.033743
+Club_Shonan Bellmare,0.033723
+Club_Guangzhou R&F; FC,0.033534
+Club_Lokomotiv Moscow,-0.033371
+Club_Tiburones Rojos de Veracruz,0.033014
+Club_Southend United,-0.033004
+Club_Quertaro,-0.032986
+Club_Bristol City,-0.032705
+Club_Chamois Niortais Football Club,-0.032643
+Nationality_Ukraine,-0.032518
+Club_SV Werder Bremen,-0.031936
+Club_GIF Sundsvall,0.031760
+Club_Queens Park Rangers,-0.031710
+Work Rate_High/ Low,-0.031657
+Club_Olympiacos CFP,-0.031627
+Club_Bristol Rovers,0.031570
+Club_Yeovil Town,0.031558
+StandingTackle,0.031211
+Club_Adelaide United,0.030811
+Work Rate_Medium/ Medium,0.030641
+Club_AFC Wimbledon,0.030196
+Position_CDM,0.029318
+Position_LM,-0.029123
+Club_Lecce,0.028952
+LongPassing,0.027527
+Club_Eintracht Frankfurt,-0.027492
+Club_Orlando City SC,-0.025417
+Club_Jbilo Iwata,0.025295
+Club_Parma,-0.025003
+Club_Middlesbrough,-0.024640
+Position_RM,-0.024472
+Club_Argentinos Juniors,-0.024458
+Club_Fulham,0.024430
+Club_Gimnstic de Tarragona,-0.024412
+Club_Portsmouth,-0.023983
+Nationality_Germany,-0.022806
+Position_RB,-0.022694
+Club_Kashima Antlers,-0.022635
+Club_Daegu FC,0.022545
+Club_CD Huachipato,0.022395
+Aggression,-0.022236
+Club_FC Nordsjlland,-0.022216
+Club_Philadelphia Union,-0.022184
+CB,0.020920
+RCB,0.020920
+LCB,0.020920
+Work Rate_Medium/ High,0.020871
+Nationality_Kosovo,-0.020523
+Club_Estudiantes de La Plata,-0.020317
+Club_Arka Gdynia,0.020239
+Club_Al Taawoun,0.020201
+Jersey Number,-0.020196
+Club_Malm FF,-0.019984
+Club_Milton Keynes Dons,0.019781
+Position_RCB,-0.019427
+Agility,-0.019335
+Club_Gimnasia y Esgrima La Plata,-0.019222
+LCM,-0.019055
+CM,-0.019055
+RCM,-0.019055
+Club_ SSV Jahn Regensburg,-0.018794
+Club_Beijing Renhe FC,0.018740
+Club_Jaguares de Crdoba,0.018493
+HeadingAccuracy,-0.018144
+Club_Livorno,0.017563
+Nationality_France,0.017489
+Club_Alanyaspor,-0.017430
+Nationality_Iceland,-0.017399
+Strength,-0.017081
+Volleys,0.016801
+Club_Pescara,-0.016691
+Nationality_Chile,-0.016516
+BallControl,-0.016423
+Club_US Salernitana 1919,-0.016191
+Club_FC Basel 1893,-0.016073
+Balance,0.015837
+Curve,-0.015652
+Position_RW,-0.015273
+Club_Celtic,-0.015248
+Club_Unin La Calera,0.015186
+Nationality_South Africa,-0.014390
+Club_Vitria,-0.014072
+Club_Ettifaq FC,-0.014050
+Club_SK Sturm Graz,-0.013840
+Club_RC Strasbourg Alsace,-0.013673
+Composure,-0.012091
+Nationality_Argentina,0.011690
+Club_Sheffield Wednesday,-0.011412
+Club_AS Nancy Lorraine,-0.011377
+Dribbling,0.011265
+Nationality_Sweden,0.011164
+Club_IFK Gteborg,0.011051
+Penalties,-0.010952
+Club_Newell's Old Boys,-0.010893
+Club_FC Dallas,-0.010604
+Club_Excelsior,-0.010120
+Club_NAC Breda,-0.010037
+Marking,-0.009916
+Club_FC Emmen,0.009665
+Nationality_Morocco,0.009471
+ShortPassing,0.009200
+Club_Chapecoense,-0.009126
+Position_LB,-0.007916
+Club_Lech Pozna?,-0.007855
+Weight,0.007439
+Club_Scunthorpe United,0.007254
+GKPositioning,0.006943
+GKDiving,0.006762
+Club_New York City FC,-0.006577
+Jumping,-0.006336
+Club_Mansfield Town,0.006333
+Nationality_Angola,-0.006315
+Crossing,-0.005648
+Club_FC Red Bull Salzburg,-0.005644
+Weak Foot,0.005552
+LongShots,-0.005163
+Club_Independiente,0.005133
+Club_Newcastle United,0.004413
+Interceptions,-0.004133
+GKKicking,0.003415
+Club_FC Lugano,0.003247
+Club_San Martn de San Juan,0.002620
+Club_1. FSV Mainz 05,-0.002360
+Club_Godoy Cruz,-0.002139
+Club_Burton Albion,0.001719
+Club_Brisbane Roar,-0.001710
+Club_Bolton Wanderers,-0.001516
+Club_CD Numancia,-0.000523
+Club_Rotherham United,-0.000257
+Club_Grenoble Foot 38,0.000071
+Club_Carpi,0.000053
